@@ -3,175 +3,595 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranjan Ravindra Mamadapur | Portfolio</title>
+    <title>Ranjan Ravindra Mamadapur | Developer Portfolio</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    
+    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts: Space Grotesk (Headings), JetBrains Mono (Tech Accents), Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepDark: '#050505',
+                        darkBg: '#0a0a0c',
+                        neonCyan: '#00ffff',
+                        neonBlue: '#0066ff'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        display: ['Space Grotesk', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
-        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .gradient-text { background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; color: transparent; }
+        body { 
+            background-color: #050505;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            /* Prevent scrolling during loader */
+            overflow-y: hidden; 
+        }
+
+        /* Animated Subtle Grid Background */
+        .bg-grid {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            z-index: 0;
+            pointer-events: none;
+            transform-origin: center;
+            animation: rotateGrid 120s linear infinite;
+        }
+
+        @keyframes rotateGrid {
+            0% { transform: rotate(0deg) translateY(0); }
+            100% { transform: rotate(360deg) translateY(50px); }
+        }
+
+        /* Tech Glassmorphism Panels */
+        .tech-glass { 
+            background: linear-gradient(145deg, rgba(15, 20, 25, 0.8), rgba(5, 10, 15, 0.9));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.02);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tech-glass::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.05), transparent);
+            transition: all 0.5s ease;
+            transform: skewX(-20deg);
+        }
+
+        .tech-glass:hover {
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 255, 0.15);
+            transform: translateY(-8px) scale(1.02);
+        }
+        
+        .tech-glass:hover::before {
+            left: 200%;
+        }
+
+        /* Neon Text Glow */
+        .neon-text {
+            color: #00ffff;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+        }
+
+        /* Terminal Cursor */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background-color: #00ffff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #1a2a3a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00ffff; }
+
+        .gradient-text {
+            background: linear-gradient(to right, #ffffff, #88ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
-<body class="antialiased selection:bg-indigo-500 selection:text-white">
+<body class="antialiased selection:bg-neonCyan/30 selection:text-white relative">
 
-    <!-- Hero Section -->
-    <section class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
-        <div class="hero-content max-w-4xl opacity-0 translate-y-10">
-            <h1 class="text-5xl md:text-7xl font-bold mb-4 tracking-tight">Ranjan Ravindra <span class="gradient-text">Mamadapur</span></h1>
-            <p class="text-xl md:text-2xl text-slate-400 mb-6">Social Media Team Lead @ OS Code Community | Programming Engineer</p>
-            <p class="text-lg text-slate-300 max-w-2xl mx-auto mb-8">B.Tech Computer Science student at REVA University blending technical problem-solving with creative storytelling. Freelance Video Editor & Designer transforming ideas into compelling visual content.</p>
-            <div class="flex gap-4 justify-center">
-                <a href="#experience" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-full font-medium transition-colors">View Experience</a>
-                <a href="#contact" class="px-6 py-3 border border-slate-600 hover:border-slate-400 rounded-full font-medium transition-colors">Contact Me</a>
+    <!-- Terminal Loading Screen -->
+    <div id="loader" class="fixed inset-0 z-50 flex flex-col items-start justify-center bg-deepDark p-8 md:p-20 font-mono text-green-400 md:text-lg">
+        <div class="max-w-3xl w-full">
+            <div id="term-1" class="opacity-0 mb-2">> System initialization...</div>
+            <div id="term-2" class="opacity-0 mb-2">> Loading dependencies [Tailwind, GSAP, Fonts]... <span class="text-neonCyan">OK</span></div>
+            <div id="term-3" class="opacity-0 mb-2">> Fetching user profile: <span class="text-white">Ranjan Ravindra Mamadapur</span>...</div>
+            <div id="term-4" class="opacity-0 mb-2">> Bypassing security protocols... <span class="text-neonCyan">ACCESS GRANTED</span></div>
+            <div id="term-5" class="opacity-0 mt-6 text-xl md:text-3xl text-neonCyan font-bold">
+                <span id="term-typewriter"></span><span class="cursor"></span>
+            </div>
+            <div id="loader-bar-container" class="w-full h-1 bg-gray-800 mt-8 rounded-full overflow-hidden opacity-0">
+                <div id="loader-bar" class="h-full bg-neonCyan w-0 shadow-[0_0_10px_#00ffff]"></div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Skills Section -->
-    <section class="py-20 px-4 md:px-20">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center section-title opacity-0">Top <span class="gradient-text">Skills</span></h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="skill-card glass-panel p-6 rounded-2xl text-center opacity-0"><i class="fa-solid fa-code text-3xl text-indigo-400 mb-4"></i><h3 class="font-semibold">Software Development</h3></div>
-                <div class="skill-card glass-panel p-6 rounded-2xl text-center opacity-0"><i class="fa-solid fa-pen-nib text-3xl text-indigo-400 mb-4"></i><h3 class="font-semibold">Graphic Design</h3></div>
-                <div class="skill-card glass-panel p-6 rounded-2xl text-center opacity-0"><i class="fa-solid fa-image text-3xl text-indigo-400 mb-4"></i><h3 class="font-semibold">Poster Design</h3></div>
-                <div class="skill-card glass-panel p-6 rounded-2xl text-center opacity-0"><i class="fa-solid fa-calendar-check text-3xl text-indigo-400 mb-4"></i><h3 class="font-semibold">Event Management</h3></div>
-            </div>
-        </div>
-    </section>
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
 
-    <!-- Experience Section -->
-    <section id="experience" class="py-20 px-4 md:px-20 bg-slate-900/50">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center section-title opacity-0">Professional <span class="gradient-text">Experience</span></h2>
-            <div class="space-y-8">
-                
-                <div class="exp-card glass-panel p-8 rounded-2xl border-l-4 border-l-indigo-500 opacity-0">
-                    <div class="flex justify-between items-start flex-wrap gap-2 mb-4">
-                        <div>
-                            <h3 class="text-2xl font-bold">Social Media Team Lead</h3>
-                            <h4 class="text-lg text-indigo-400">OS Code Community Reva</h4>
-                        </div>
-                        <span class="bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full text-sm">Aug 2026 - Present</span>
-                    </div>
-                    <p class="text-slate-300">Promoted from Event Management for creative contributions. Leading social media strategy, designing digital assets, and managing online community engagement to elevate technical initiatives and events.</p>
+    <!-- Main Content Wrapper -->
+    <main class="relative z-10">
+
+        <!-- Hero Section -->
+        <section class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative pt-12 overflow-hidden">
+            <!-- Decorative floating background elements -->
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neonCyan/5 rounded-full blur-[100px] pointer-events-none float-anim"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neonBlue/5 rounded-full blur-[120px] pointer-events-none float-anim-delayed"></div>
+
+            <div class="hero-content max-w-4xl opacity-0 flex flex-col items-center">
+                <div class="font-mono text-neonCyan mb-4 tracking-widest text-sm md:text-base border border-neonCyan/30 rounded-full px-4 py-1 bg-neonCyan/5">
+                    <i class="fa-solid fa-terminal mr-2"></i>Hello World!
                 </div>
-
-                <div class="exp-card glass-panel p-8 rounded-2xl border-l-4 border-l-sky-500 opacity-0">
-                    <div class="flex justify-between items-start flex-wrap gap-2 mb-4">
-                        <div>
-                            <h3 class="text-2xl font-bold">Event Management</h3>
-                            <h4 class="text-lg text-sky-400">OS Code Community Reva</h4>
-                        </div>
-                        <span class="bg-sky-500/20 text-sky-300 px-3 py-1 rounded-full text-sm">Oct 2025 - July 2026</span>
-                    </div>
-                    <p class="text-slate-300">Operational oversight for all OS Code activities, including logistics, planning, and execution of technical workshops, hackathons, and major seminars.</p>
-                </div>
-
-                <div class="exp-card glass-panel p-8 rounded-2xl border-l-4 border-l-purple-500 opacity-0">
-                    <div class="flex justify-between items-start flex-wrap gap-2 mb-4">
-                        <div>
-                            <h3 class="text-2xl font-bold">Programming Engineer</h3>
-                            <h4 class="text-lg text-purple-400">REVA University</h4>
-                        </div>
-                        <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm">Sept 2025 - Present</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Education Section -->
-    <section class="py-20 px-4 md:px-20">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center section-title opacity-0">Education <span class="gradient-text">Journey</span></h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="edu-card glass-panel p-6 rounded-2xl opacity-0">
-                    <h3 class="text-xl font-bold mb-2">REVA University</h3>
-                    <p class="text-indigo-400 mb-2">BTech, Computer Science</p>
-                    <p class="text-sm text-slate-400">2025 - 2029</p>
-                </div>
-                <div class="edu-card glass-panel p-6 rounded-2xl opacity-0">
-                    <h3 class="text-xl font-bold mb-2">Empros International School</h3>
-                    <p class="text-indigo-400 mb-2">Science (Pune)</p>
-                    <p class="text-sm text-slate-400">June 2023 - March 2025</p>
-                </div>
-                <div class="edu-card glass-panel p-6 rounded-2xl opacity-0">
-                    <h3 class="text-xl font-bold mb-2">Delhi Public School</h3>
-                    <p class="text-indigo-400 mb-2">Science (Indore)</p>
-                    <p class="text-sm text-slate-400">March 2011 - March 2023</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact & Footer -->
-    <footer id="contact" class="py-12 bg-slate-900 border-t border-slate-800">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold mb-2">Let's <span class="gradient-text">Connect</span></h2>
-            <p class="text-slate-400 mb-8">Click on the icons below to get connected!</p>
-            
-            <div class="flex justify-center gap-6 mb-8 flex-wrap">
-                <a href="https://www.linkedin.com/in/ranjan-ravindra-mamadapur-a20020393" target="_blank" title="LinkedIn" class="social-icon text-slate-400 hover:text-blue-500 text-3xl transition-colors"><i class="fa-brands fa-linkedin"></i></a>
                 
-                <a href="https://github.com/ranjan0247" target="_blank" title="GitHub" class="social-icon text-slate-400 hover:text-white text-3xl transition-colors"><i class="fa-brands fa-github"></i></a>
+                <h1 class="font-display text-5xl md:text-7xl font-bold mb-6 tracking-tight gradient-text drop-shadow-2xl">
+                    Ranjan Ravindra<br/>Mamadapur
+                </h1>
                 
-                <!-- Main Instagram -->
-                <a href="https://www.instagram.com/ranjan.og" target="_blank" title="Personal Instagram (@ranjan.og)" class="social-icon text-slate-400 hover:text-pink-500 text-3xl transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                <p class="font-mono text-lg md:text-2xl text-gray-300 mb-8 flex items-center justify-center gap-2 flex-wrap">
+                    <span class="text-neonCyan">&lt;</span>
+                    Social Media Team Lead @OSCode_Community 
+                    <span class="text-neonCyan">/&gt;</span>
+                    <span class="hidden md:inline text-gray-600">|</span>
+                    <span class="text-neonCyan">{</span> Programming Engineer <span class="text-neonCyan">}</span>
+                </p>
                 
-                <!-- Edits Instagram -->
-                <a href="https://www.instagram.com/editsby.ranjan" target="_blank" title="Edits Portfolio (@editsby.ranjan)" class="social-icon text-slate-400 hover:text-purple-500 text-3xl transition-colors"><i class="fa-solid fa-camera-retro"></i></a>
+                <p class="font-sans text-base md:text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                    B.Tech Computer Science student at REVA University blending technical problem-solving with creative storytelling. Freelance Video Editor & Designer transforming ideas into compelling visual content.
+                </p>
                 
-                <a href="mailto:ranjanmamadapur@outlook.com" title="Email Me" class="social-icon text-slate-400 hover:text-rose-500 text-3xl transition-colors"><i class="fa-solid fa-envelope"></i></a>
-                
-                <a href="tel:8602689529" title="Call Me" class="social-icon text-slate-400 hover:text-emerald-500 text-3xl transition-colors"><i class="fa-solid fa-phone"></i></a>
+                <div class="flex gap-4 justify-center flex-wrap">
+                    <a href="#experience" class="px-8 py-3 bg-neonCyan/10 hover:bg-neonCyan/20 border border-neonCyan/50 hover:border-neonCyan text-neonCyan rounded-md font-mono font-bold transition-all shadow-[0_0_15px_rgba(0,255,255,0.1)] hover:shadow-[0_0_25px_rgba(0,255,255,0.3)]">
+                        <i class="fa-solid fa-code-branch mr-2"></i>View_Experience
+                    </a>
+                    <a href="#contact" class="px-8 py-3 bg-transparent border border-gray-600 hover:border-gray-300 text-gray-300 hover:text-white rounded-md font-mono transition-all">
+                        <i class="fa-solid fa-envelope mr-2"></i>Init_Contact
+                    </a>
+                </div>
             </div>
             
-            <div class="text-sm text-slate-500 space-y-2">
-                <p><i class="fa-brands fa-instagram mr-2"></i>@ranjan.og &nbsp;|&nbsp; <i class="fa-solid fa-camera-retro mr-2"></i>@editsby.ranjan</p>
-                <p>Bengaluru, Karnataka, India</p>
-                <p class="text-slate-600 mt-4">© 2026 Ranjan Ravindra Mamadapur. All rights reserved.</p>
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center opacity-50 scroll-indicator">
+                <span class="font-mono text-xs mb-2 text-neonCyan">SCROLL</span>
+                <div class="w-[1px] h-12 bg-gradient-to-b from-neonCyan to-transparent"></div>
             </div>
-        </div>
-    </footer>
+        </section>
 
-    <!-- GSAP Animations -->
+        <!-- Skills Section -->
+        <section class="py-24 px-4 md:px-20 relative">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-12 justify-center section-title opacity-0">
+                    <div class="h-[1px] w-12 bg-neonCyan/50"></div>
+                    <h2 class="font-display text-3xl md:text-4xl font-bold text-white">
+                        <span class="text-neonCyan">./</span>Top_Skills
+                    </h2>
+                    <div class="h-[1px] w-12 bg-neonCyan/50"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="skill-card tech-glass p-8 rounded-xl text-center opacity-0 group">
+                        <div class="w-16 h-16 mx-auto bg-deepDark border border-neonCyan/20 rounded-full flex items-center justify-center mb-6 group-hover:border-neonCyan transition-colors duration-300 shadow-[0_0_15px_rgba(0,255,255,0.05)] group-hover:shadow-[0_0_20px_rgba(0,255,255,0.2)]">
+                            <i class="fa-solid fa-code text-2xl text-neonCyan"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-white tracking-wide text-lg">Software Dev</h3>
+                        <p class="font-mono text-xs text-gray-500 mt-2">Logic & Architecture</p>
+                    </div>
+                    
+                    <div class="skill-card tech-glass p-8 rounded-xl text-center opacity-0 group">
+                        <div class="w-16 h-16 mx-auto bg-deepDark border border-neonCyan/20 rounded-full flex items-center justify-center mb-6 group-hover:border-neonCyan transition-colors duration-300 shadow-[0_0_15px_rgba(0,255,255,0.05)] group-hover:shadow-[0_0_20px_rgba(0,255,255,0.2)]">
+                            <i class="fa-solid fa-pen-nib text-2xl text-neonCyan"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-white tracking-wide text-lg">Graphic Design</h3>
+                        <p class="font-mono text-xs text-gray-500 mt-2">Visual Communication</p>
+                    </div>
+                    
+                    <div class="skill-card tech-glass p-8 rounded-xl text-center opacity-0 group">
+                        <div class="w-16 h-16 mx-auto bg-deepDark border border-neonCyan/20 rounded-full flex items-center justify-center mb-6 group-hover:border-neonCyan transition-colors duration-300 shadow-[0_0_15px_rgba(0,255,255,0.05)] group-hover:shadow-[0_0_20px_rgba(0,255,255,0.2)]">
+                            <i class="fa-solid fa-image text-2xl text-neonCyan"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-white tracking-wide text-lg">Poster Design</h3>
+                        <p class="font-mono text-xs text-gray-500 mt-2">Event Branding</p>
+                    </div>
+                    
+                    <div class="skill-card tech-glass p-8 rounded-xl text-center opacity-0 group">
+                        <div class="w-16 h-16 mx-auto bg-deepDark border border-neonCyan/20 rounded-full flex items-center justify-center mb-6 group-hover:border-neonCyan transition-colors duration-300 shadow-[0_0_15px_rgba(0,255,255,0.05)] group-hover:shadow-[0_0_20px_rgba(0,255,255,0.2)]">
+                            <i class="fa-solid fa-video text-2xl text-neonCyan"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-white tracking-wide text-lg">Video Editing</h3>
+                        <p class="font-mono text-xs text-gray-500 mt-2">Dynamic Storytelling</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-24 px-4 md:px-20 relative">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex items-center gap-4 mb-16 justify-center section-title opacity-0">
+                    <div class="h-[1px] w-12 bg-neonCyan/50"></div>
+                    <h2 class="font-display text-3xl md:text-4xl font-bold text-white">
+                        <span class="text-neonCyan">~/</span>Experience
+                    </h2>
+                    <div class="h-[1px] w-12 bg-neonCyan/50"></div>
+                </div>
+                
+                <div class="relative border-l border-gray-800 ml-4 md:ml-0 space-y-12 pb-8">
+                    
+                    <!-- Exp Card 1 -->
+                    <div class="exp-card relative pl-8 md:pl-12 opacity-0">
+                        <div class="absolute w-4 h-4 bg-deepDark border-2 border-neonCyan rounded-full -left-[9px] top-2 shadow-[0_0_10px_#00ffff]"></div>
+                        <div class="tech-glass p-8 rounded-r-xl rounded-bl-xl">
+                            <div class="flex justify-between items-start flex-wrap gap-4 mb-4">
+                                <div>
+                                    <h3 class="font-display text-2xl font-bold text-white mb-1">Social Media Team Lead</h3>
+                                    <h4 class="font-mono text-sm text-neonCyan flex items-center">
+                                        <i class="fa-solid fa-building mr-2"></i> OSCode Community Reva
+                                    </h4>
+                                </div>
+                                <span class="font-mono bg-neonCyan/10 border border-neonCyan/30 text-neonCyan px-3 py-1 text-xs font-bold rounded">
+                                    <i class="fa-regular fa-calendar mr-1"></i> Aug 2026 - Present
+                                </span>
+                            </div>
+                            <p class="font-sans text-gray-400 leading-relaxed text-sm md:text-base">
+                                Promoted from Event Management for creative contributions. Leading social media strategy, designing digital assets, and managing online community engagement to elevate technical initiatives and events.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Exp Card 2 -->
+                    <div class="exp-card relative pl-8 md:pl-12 opacity-0">
+                        <div class="absolute w-4 h-4 bg-deepDark border-2 border-gray-500 rounded-full -left-[9px] top-2 transition-colors duration-300 hover:border-neonCyan"></div>
+                        <div class="tech-glass p-8 rounded-r-xl rounded-bl-xl border-gray-800">
+                            <div class="flex justify-between items-start flex-wrap gap-4 mb-4">
+                                <div>
+                                    <h3 class="font-display text-2xl font-bold text-white mb-1">Event Management</h3>
+                                    <h4 class="font-mono text-sm text-gray-400 flex items-center">
+                                        <i class="fa-solid fa-building mr-2"></i> OSCode Community Reva
+                                    </h4>
+                                </div>
+                                <span class="font-mono bg-gray-800 border border-gray-600 text-gray-300 px-3 py-1 text-xs font-bold rounded">
+                                    <i class="fa-regular fa-calendar mr-1"></i> Oct 2025 - July 2026
+                                </span>
+                            </div>
+                            <p class="font-sans text-gray-400 leading-relaxed text-sm md:text-base">
+                                Operational oversight for all OSCode activities, including logistics, planning, and execution of technical workshops, hackathons, and major seminars.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Exp Card 3 -->
+                    <div class="exp-card relative pl-8 md:pl-12 opacity-0">
+                        <div class="absolute w-4 h-4 bg-deepDark border-2 border-neonCyan rounded-full -left-[9px] top-2 shadow-[0_0_10px_#00ffff]"></div>
+                        <div class="tech-glass p-8 rounded-r-xl rounded-bl-xl">
+                            <div class="flex justify-between items-start flex-wrap gap-4">
+                                <div>
+                                    <h3 class="font-display text-2xl font-bold text-white mb-1">Programming Engineer</h3>
+                                    <h4 class="font-mono text-sm text-neonCyan flex items-center">
+                                        <i class="fa-solid fa-building mr-2"></i> REVA University
+                                    </h4>
+                                </div>
+                                <span class="font-mono bg-neonCyan/10 border border-neonCyan/30 text-neonCyan px-3 py-1 text-xs font-bold rounded">
+                                    <i class="fa-regular fa-calendar mr-1"></i> Sept 2025 - Present
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section class="py-24 px-4 md:px-20 relative">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex items-center gap-4 mb-16 justify-center section-title opacity-0">
+                    <div class="h-[1px] w-12 bg-neonCyan/50"></div>
+                    <h2 class="font-display text-3xl md:text-4xl font-bold text-white">
+                        <span class="text-neonCyan">./</span>Education
+                    </h2>
+                    <div class="h-[1px] w-12 bg-neonCyan/50"></div>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Edu 1 -->
+                    <div class="edu-card tech-glass p-8 rounded-xl opacity-0 border-t-2 border-t-neonCyan">
+                        <div class="mb-4">
+                            <i class="fa-solid fa-graduation-cap text-3xl text-neonCyan mb-4"></i>
+                            <h3 class="font-display text-xl font-bold text-white leading-tight">REVA University</h3>
+                        </div>
+                        <div class="mt-auto">
+                            <p class="font-sans text-gray-300 mb-2 font-medium">BTech, Computer Science</p>
+                            <p class="font-mono text-xs text-neonCyan bg-neonCyan/10 inline-block px-2 py-1 rounded">2025 - 2029</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Edu 2 -->
+                    <div class="edu-card tech-glass p-8 rounded-xl opacity-0 border-t-2 border-t-gray-700 hover:border-t-neonCyan transition-colors">
+                        <div class="mb-4">
+                            <i class="fa-solid fa-school text-3xl text-gray-500 mb-4 edu-icon"></i>
+                            <h3 class="font-display text-xl font-bold text-white leading-tight">Empros International School</h3>
+                        </div>
+                        <div class="mt-auto">
+                            <p class="font-sans text-gray-300 mb-2 font-medium">Science (Pune)</p>
+                            <p class="font-mono text-xs text-gray-400 bg-gray-800 inline-block px-2 py-1 rounded">June 2023 - March 2025</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Edu 3 -->
+                    <div class="edu-card tech-glass p-8 rounded-xl opacity-0 border-t-2 border-t-gray-700 hover:border-t-neonCyan transition-colors">
+                        <div class="mb-4">
+                            <i class="fa-solid fa-school text-3xl text-gray-500 mb-4 edu-icon"></i>
+                            <h3 class="font-display text-xl font-bold text-white leading-tight">Delhi Public School</h3>
+                        </div>
+                        <div class="mt-auto">
+                            <p class="font-sans text-gray-300 mb-2 font-medium">Science (Indore)</p>
+                            <p class="font-mono text-xs text-gray-400 bg-gray-800 inline-block px-2 py-1 rounded">March 2011 - March 2023</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact & Footer -->
+        <footer id="contact" class="pt-20 pb-10 relative z-10 bg-gradient-to-b from-transparent to-black border-t border-white/5">
+            <div class="max-w-4xl mx-auto px-4 text-center">
+                <h2 class="font-display text-3xl font-bold mb-2 text-white">Initiate_Connection</h2>
+                <p class="font-mono text-neonCyan mb-12 text-sm">>> Select protocol below to connect:</p>
+                
+                <div class="flex justify-center gap-6 mb-12 flex-wrap">
+                    <a href="https://www.linkedin.com/in/ranjan-ravindra-mamadapur-a20020393" target="_blank" title="LinkedIn" class="social-icon group relative opacity-0 translate-y-4">
+                        <div class="absolute inset-0 bg-neonCyan blur-md opacity-0 group-hover:opacity-50 transition-opacity rounded-full"></div>
+                        <div class="relative w-14 h-14 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center text-gray-400 group-hover:text-neonCyan group-hover:border-neonCyan transition-all text-2xl">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="https://github.com/ranjan0247" target="_blank" title="GitHub" class="social-icon group relative opacity-0 translate-y-4">
+                        <div class="absolute inset-0 bg-white blur-md opacity-0 group-hover:opacity-40 transition-opacity rounded-full"></div>
+                        <div class="relative w-14 h-14 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center text-gray-400 group-hover:text-white group-hover:border-white transition-all text-2xl">
+                            <i class="fa-brands fa-github"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.instagram.com/ranjan.og" target="_blank" title="Personal Instagram" class="social-icon group relative opacity-0 translate-y-4">
+                        <div class="absolute inset-0 bg-pink-500 blur-md opacity-0 group-hover:opacity-50 transition-opacity rounded-full"></div>
+                        <div class="relative w-14 h-14 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center text-gray-400 group-hover:text-pink-500 group-hover:border-pink-500 transition-all text-2xl">
+                            <i class="fa-brands fa-instagram"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.instagram.com/editsby.ranjan" target="_blank" title="Edits Portfolio" class="social-icon group relative opacity-0 translate-y-4">
+                        <div class="absolute inset-0 bg-purple-500 blur-md opacity-0 group-hover:opacity-50 transition-opacity rounded-full"></div>
+                        <div class="relative w-14 h-14 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center text-gray-400 group-hover:text-purple-400 group-hover:border-purple-400 transition-all text-2xl">
+                            <i class="fa-solid fa-camera-retro"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="mailto:ranjanmamadapur@outlook.com" title="Email Me" class="social-icon group relative opacity-0 translate-y-4">
+                        <div class="absolute inset-0 bg-yellow-500 blur-md opacity-0 group-hover:opacity-40 transition-opacity rounded-full"></div>
+                        <div class="relative w-14 h-14 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center text-gray-400 group-hover:text-yellow-400 group-hover:border-yellow-400 transition-all text-2xl">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="tel:8602689529" title="Call Me" class="social-icon group relative opacity-0 translate-y-4">
+                        <div class="absolute inset-0 bg-green-500 blur-md opacity-0 group-hover:opacity-40 transition-opacity rounded-full"></div>
+                        <div class="relative w-14 h-14 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center text-gray-400 group-hover:text-green-400 group-hover:border-green-400 transition-all text-2xl">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="font-mono text-sm text-gray-500 space-y-3 p-6 tech-glass rounded-xl inline-block text-left mb-8">
+                    <p class="flex items-center"><i class="fa-brands fa-instagram mr-3 text-gray-400"></i><span class="text-white">@ranjan.og</span> &nbsp;<span class="text-gray-700">|</span>&nbsp; <i class="fa-solid fa-camera-retro mx-2 text-gray-400"></i><span class="text-white">@editsby.ranjan</span></p>
+                    <p class="flex items-center"><i class="fa-solid fa-location-dot mr-3 text-gray-400"></i><span class="text-white">Bengaluru, Karnataka, India</span></p>
+                </div>
+                
+                <p class="font-mono text-gray-600 mt-6 text-xs">/* © 2026 Ranjan Ravindra Mamadapur. All rights reserved. */</p>
+            </div>
+        </footer>
+    </main>
+
     <script>
-        gsap.registerPlugin(ScrollTrigger);
+        // Register GSAP plugins
+        gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
-        gsap.to(".hero-content", { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" });
+        // --- Terminal Loading Sequence ---
+        const loaderTl = gsap.timeline();
 
+        // Reveal terminal lines
+        loaderTl.to("#term-1", { opacity: 1, duration: 0.2, delay: 0.3 })
+                .to("#term-2", { opacity: 1, duration: 0.2, delay: 0.2 })
+                .to("#term-3", { opacity: 1, duration: 0.2, delay: 0.3 })
+                .to("#term-4", { opacity: 1, duration: 0.2, delay: 0.4 });
+
+        // Typewriter effect for welcome text
+        loaderTl.to("#term-typewriter", {
+            duration: 1.5,
+            text: "> Welcome, Ranjan.",
+            ease: "none",
+            delay: 0.2
+        });
+
+        // Loader bar progress
+        loaderTl.to("#loader-bar-container", { opacity: 1, duration: 0.2 })
+                .to("#loader-bar", { width: "100%", duration: 0.8, ease: "power2.inOut", delay: 0.2 })
+                
+        // Slide up and remove loader
+        loaderTl.to("#loader", {
+            y: "-100%",
+            duration: 0.8,
+            ease: "power4.inOut",
+            onComplete: () => {
+                document.body.style.overflowY = "auto";
+                document.getElementById('loader').style.display = 'none';
+                
+                // Initialize Hero Animation after loader finishes
+                initHeroAnim();
+            }
+        });
+
+        // --- Main Content Animations ---
+        function initHeroAnim() {
+            const heroTl = gsap.timeline();
+            
+            heroTl.to(".hero-content", { 
+                y: 0, 
+                opacity: 1, 
+                duration: 1.2, 
+                ease: "power3.out" 
+            })
+            .fromTo(".hero-content p, .hero-content div", 
+                { y: 20, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power2.out" },
+                "-=0.8"
+            );
+            
+            // Continuous floating animation for background blobs
+            gsap.to(".float-anim", {
+                y: -30,
+                x: 20,
+                duration: 4,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+            
+            gsap.to(".float-anim-delayed", {
+                y: 40,
+                x: -30,
+                duration: 5,
+                delay: 1,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+
+            // Scroll indicator bounce
+            gsap.to(".scroll-indicator", {
+                y: 10,
+                duration: 1.5,
+                repeat: -1,
+                yoyo: true,
+                ease: "power1.inOut"
+            });
+        }
+
+        // ScrollTrigger Animations for Sections
+        
+        // Section Titles
         gsap.utils.toArray(".section-title").forEach(title => {
-            gsap.to(title, {
-                scrollTrigger: { trigger: title, start: "top 85%" },
-                opacity: 1, y: -20, duration: 0.8, ease: "power2.out"
-            });
+            gsap.fromTo(title, 
+                { opacity: 0, scale: 0.9, y: 30 },
+                {
+                    scrollTrigger: { 
+                        trigger: title, 
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "back.out(1.5)"
+                }
+            );
         });
 
-        gsap.to(".skill-card", {
-            scrollTrigger: { trigger: ".skill-card", start: "top 85%" },
-            opacity: 1, y: -20, duration: 0.6, stagger: 0.15, ease: "back.out(1.7)"
-        });
+        // Skills Grid
+        gsap.fromTo(".skill-card", 
+            { opacity: 0, y: 40 },
+            {
+                scrollTrigger: { trigger: ".skill-card", start: "top 85%" },
+                opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power3.out"
+            }
+        );
 
+        // Experience Timeline
         gsap.utils.toArray(".exp-card").forEach((card, i) => {
-            gsap.to(card, {
-                scrollTrigger: { trigger: card, start: "top 85%" },
-                opacity: 1, x: 0, duration: 0.8, ease: "power2.out", delay: i * 0.2
+            gsap.fromTo(card, 
+                { opacity: 0, x: -30 },
+                {
+                    scrollTrigger: { trigger: card, start: "top 85%" },
+                    opacity: 1, x: 0, duration: 0.7, ease: "power2.out", delay: i * 0.1
+                }
+            );
+        });
+
+        // Education Cards
+        gsap.fromTo(".edu-card", 
+            { opacity: 0, y: 30 },
+            {
+                scrollTrigger: { trigger: ".edu-card", start: "top 85%" },
+                opacity: 1, y: 0, duration: 0.6, stagger: 0.2, ease: "power2.out"
+            }
+        );
+        
+        // Education Icon Hovers via JS (Adding extra interaction)
+        const eduCards = document.querySelectorAll('.edu-card');
+        eduCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const icon = card.querySelector('.edu-icon');
+                if(icon) icon.classList.replace('text-gray-500', 'text-neonCyan');
+            });
+            card.addEventListener('mouseleave', () => {
+                const icon = card.querySelector('.edu-icon');
+                if(icon) icon.classList.replace('text-neonCyan', 'text-gray-500');
             });
         });
 
-        gsap.to(".edu-card", {
-            scrollTrigger: { trigger: ".edu-card", start: "top 85%" },
-            opacity: 1, scale: 1, duration: 0.6, stagger: 0.2, ease: "power2.out"
+        // Social Icons
+        gsap.to(".social-icon", {
+            scrollTrigger: { trigger: "#contact", start: "top 90%" },
+            opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: "back.out(2)"
         });
 
-        gsap.from(".social-icon", {
-            scrollTrigger: { trigger: "#contact", start: "top 90%" },
-            opacity: 0, y: 20, duration: 0.5, stagger: 0.1, ease: "power1.out"
-        });
     </script>
 </body>
 </html>
